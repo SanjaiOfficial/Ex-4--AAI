@@ -1,7 +1,7 @@
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
+<H3>ENTER YOUR NAME: SANJAI L</H3>
+<H3>ENTER YOUR REGISTER NO.: 212223230184</H3>
 <H3>EX. NO.4</H3>
-<H3>DATE:</H3>
+<H3>DATE:06-08-2026</H3>
 <H1 ALIGN =CENTER> Implementation of Hidden Markov Model</H1>
 
 ## Aim: 
@@ -22,9 +22,51 @@ Step 9:Find the most likely sequence of hidden states by selecting the hidden st
 
 ## Program:
 Insert your Program here
+```PY
+import numpy as np
+
+transition = np.array([
+    [0.8, 0.2],   # Sunny -> Sunny, Rainy
+    [0.4, 0.6]    # Rainy -> Sunny, Rainy
+])
+
+emission = np.array([
+    [0.7, 0.3],   # Sunny -> Happy, Sad
+    [0.4, 0.6]    # Rainy -> Happy, Sad
+])
+
+initial = np.array([0.6, 0.4])
+observations = [0, 1, 0]  
+alpha = np.zeros((len(observations), 2))
+alpha[0] = initial * emission[:, observations[0]]
+
+for t in range(1, len(observations)):
+    for state in range(2):
+        alpha[t, state] = emission[state, observations[t]] * np.sum(
+            alpha[t-1] * transition[:, state]
+        )
+
+
+sequence_probability = np.sum(alpha[-1])
+
+hidden_states = np.argmax(alpha, axis=1)
+
+states = ["Sunny", "Rainy"]
+result = [states[i] for i in hidden_states]
+
+print("Alpha Matrix:")
+print(alpha)
+
+print("\nProbability of observed sequence:", sequence_probability)
+
+print("\nMost likely hidden state sequence:")
+print(result)
+
+```
 
 ## Output:
-Show your results here
+
+<img width="1203" height="192" alt="Screenshot 2026-08-06 222330" src="https://github.com/user-attachments/assets/e298e2e9-1763-45d1-a7dd-f7239c591643" />
 
 ## Result:
 Thus Hidden Markov Model is implemented using python.
